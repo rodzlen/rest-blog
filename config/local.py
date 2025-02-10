@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -38,9 +38,12 @@ DJANGO_APPS = [
 ]
 OWN_APPS = [
     'blog',
+    'user',
 ]
 THRID_PARTY_APPS = [
     'rest_framework',
+    'rest_framework_simplejwt',
+    'drf_yasg',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + OWN_APPS + THRID_PARTY_APPS
@@ -127,9 +130,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 APPEND_SLASH = False
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS':"rest_framework.pagination.PageNumberPagination",
-    'PAGE_SIZE':10,
-    'DEFAULT_AUTHENTICATION_CLASSES':[
+    'DEFAULT_PAGINATION_CLASS': "rest_framework.pagination.PageNumberPagination",
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
+}
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "TOKEN_OBTAIN_SERIALIZER": "utills.jwt_serializers.MyTokenObtainPairSerializer",
 }
